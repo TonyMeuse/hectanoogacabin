@@ -128,6 +128,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .hostinfo{display:grid;gap:2px;min-width:0;flex:1}
 .contactrow{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center}
 .contactrow span{user-select:all;overflow-wrap:anywhere}
+.contactrow a,.foothost a{color:var(--spruce);font-weight:600;text-underline-offset:3px;overflow-wrap:anywhere}
 
 /* booking card */
 .book{position:sticky;top:calc(env(safe-area-inset-top,0px) + 88px);min-width:0}
@@ -403,7 +404,7 @@ footer{border-top:1px solid var(--line);padding-block:32px 40px;color:var(--mute
 
 <footer>
   <div class="wrap foot">
-    <div style="display:grid;gap:4px"><span id="footName">© Hectanooga Lake Adventure Cabin</span><span style="font-size:.8rem">Sample photos from Unsplash by Pascal Bullan, Alex Bonr, Clay Banks, Yauheni Hancharenka and Nenad Radojčić.</span></div>
+    <div style="display:grid;gap:4px"><span class="foothost" id="footHost">Hosted by Kevin Lombard</span><span id="footName">© Hectanooga Lake Adventure Cabin</span><span style="font-size:.8rem">Sample photos from Unsplash by Pascal Bullan, Alex Bonr, Clay Banks, Yauheni Hancharenka and Nenad Radojčić.</span></div>
     <button class="linkbtn" id="ownerFoot" style="color:var(--muted);font-weight:500">Owner login</button>
   </div>
 </footer>
@@ -462,7 +463,7 @@ function defaults(){return{
   checkIn:'3:00 PM', checkOut:'11:00 AM',
   amenities:['Solar power for lights and phone charging','Wood stove for heat, with firewood supplied','Propane cooktop, pots, pans and dishes','Drinking water supplied','Private outhouse','Fire pit with lakeside seating','Canoe and paddles','Sleeps up to 4 with a queen bed and a bunk'],
   rules:['No smoking inside the cabin','Pets by approval only, so please ask before booking','Fires only in the wood stove and the fire pit','Quiet hours after 11 PM','Pack out what you pack in'],
-  hostName:'The owner', hostEmail:'bookings@hectanoogacabin.com', hostPhone:'(555) 555-0123',
+  hostName:'Kevin Lombard', hostEmail:'bookings@hectanoogacabin.com',
   photos:[{id:'p1',src:U('photo-1730476777292-dc1e8b75214b'),caption:'The cabin on the water'},{id:'p2',src:U('photo-1590930298432-4567af25e674'),caption:'The dock on a calm morning'},{id:'p3',src:U('photo-1716908520076-4acd8a09f537'),caption:'Warm and dry by the wood stove'},{id:'p4',src:U('photo-1659014110205-4d0bf6a3551c'),caption:'Campfire by the lake'},{id:'p5',src:U('photo-1759675001595-7b1e5ff997f0'),caption:'Fall colours around the lake'}],
   blocked:[addDays(TODAY,16),addDays(TODAY,17)],
   bookings:[
@@ -473,6 +474,7 @@ function defaults(){return{
 }}
 let S=defaults();
 try{const raw=localStorage.getItem(KEY);if(raw){const o=JSON.parse(raw);S=Object.assign(defaults(),o)}}catch(e){}
+if(S.hostName==='The owner')S.hostName='Kevin Lombard';
 let saveTimer=null;
 function save(){clearTimeout(saveTimer);saveTimer=setTimeout(()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast('This browser is out of storage space. Try smaller photos.')}},250)}
 let sel={in:null,out:null};let hover=null;let guests=Math.min(2,S.maxGuests);
@@ -506,9 +508,12 @@ function renderText(){
   $('#times').replaceChildren(h('div',{class:'time'},h('small',{class:'eyebrow',text:'Check-in'}),h('b',{text:'After '+S.checkIn})),h('div',{class:'time'},h('small',{class:'eyebrow',text:'Check-out'}),h('b',{text:'By '+S.checkOut})),h('div',{class:'time'},h('small',{class:'eyebrow',text:'Minimum stay'}),h('b',{text:nightsTxt(S.minNights)})));
   $('#ruleList').replaceChildren(...S.rules.map(r=>h('li',{text:r})));
   const initial=(S.hostName||'H').trim().charAt(0).toUpperCase();
+  const emailLink=e=>/^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/.test(e)?h('a',{href:'mailto:'+e,text:e}):h('span',{text:e});
   const copy=(v,label)=>h('button',{class:'btn ghost sm',onclick:async()=>{try{await navigator.clipboard.writeText(v);toast(label+' copied')}catch(e){toast('Select the text to copy it')}}},'Copy');
   $('#host').replaceChildren(h('div',{class:'avatar',text:initial}),h('div',{class:'hostinfo'},h('b',{text:'Hosted by '+S.hostName}),h('span',{class:'muted',text:'Book directly with the owner. No booking-site fees.'}),
-    h('div',{class:'contactrow',style:'margin-top:8px'},h('span',{text:S.hostEmail}),copy(S.hostEmail,'Email')),h('div',{class:'contactrow'},h('span',{text:S.hostPhone}),copy(S.hostPhone,'Phone number'))));
+    h('div',{class:'contactrow',style:'margin-top:8px'},emailLink(S.hostEmail),copy(S.hostEmail,'Email'))));
+  const fh=$('#footHost');fh.replaceChildren('Hosted by '+(S.hostName||'the owner'));
+  if(S.hostEmail){fh.append(' · ',emailLink(S.hostEmail))}
 }
 function renderGallery(){
   const g=$('#photos');const ps=S.photos;const n=ps.length;const show=n>=5?ps.slice(0,5):n>=3?ps.slice(0,3):ps;
@@ -729,7 +734,7 @@ function renderAdmin(){
         :h('div',{class:'phbtns'},h('button',{disabled:i===0,'aria-label':'Move earlier',onclick:()=>movePh(i,-1)},'←'),h('button',{disabled:i===S.photos.length-1,'aria-label':'Move later',onclick:()=>movePh(i,1)},'→'),i?h('button',{onclick:()=>{const [x]=S.photos.splice(i,1);S.photos.unshift(x);live();renderAdmin()}},'Make cover'):null,h('button',{class:'del',onclick:()=>{confirmKey=ck;renderAdmin()}},'Delete'))))}));
     pane.append(h('h3',{text:'Photos'}),h('p',{class:'muted',text:'The first photo is the cover. Use the arrows to change the order. The sample pictures are stock photos to swap for real photos of the cabin.'}),drop,grid);
   }else if(admTab==='contact'){
-    pane.append(h('h3',{text:'Contact & rules'}),h('div',{class:'form'},aField('Host name','hostName'),h('div',{class:'two'},aField('Email','hostEmail',{type:'email'}),aField('Phone','hostPhone',{type:'tel'})),
+    pane.append(h('h3',{text:'Contact & rules'}),h('div',{class:'form'},aField('Host name','hostName'),aField('Email','hostEmail',{type:'email',help:'Shown on the site as a link guests can click to email you.'}),
       h('div',{class:'two'},aField('Check-in time','checkIn'),aField('Check-out time','checkOut')),aField('House rules (one per line)','rules',{area:true,rows:6,list:true})),
       h('div',{style:'border-top:1px solid var(--line);padding-top:18px;display:grid;gap:10px'},h('b',{text:'Start over'}),h('p',{class:'hint',text:'Put the sample content, photos and bookings back the way they were.'}),
         confirmKey==='reset'?h('div',{class:'confirmrow'},h('span',{class:'hint',text:'This removes all your changes.'}),h('button',{class:'btn danger sm',onclick:()=>{S=defaults();confirmKey=null;sel={in:null,out:null};live();renderAdmin();toast('Sample content restored')}},'Reset everything'),h('button',{class:'btn ghost sm',onclick:()=>{confirmKey=null;renderAdmin()}},'Cancel'))
