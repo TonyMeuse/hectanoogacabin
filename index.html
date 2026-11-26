@@ -99,7 +99,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .content{display:grid;gap:52px;min-width:0}
 .content section{display:grid;gap:18px;min-width:0}
 .content section+section{border-top:1px solid var(--line);padding-top:48px}
-@media (max-width:960px){.layout{grid-template-columns:minmax(0,1fr);gap:40px}.book{order:-1;position:static}}
+@media (max-width:960px){.layout{grid-template-columns:minmax(0,1fr);gap:40px}.book{order:-1}}
 
 .facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
 .fact{padding:18px 20px;display:grid;gap:4px;min-width:0}
@@ -131,6 +131,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 
 /* booking card */
 .book{position:sticky;top:calc(env(safe-area-inset-top,0px) + 88px);min-width:0}
+@media (max-width:960px){.book{position:static}}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:24px;display:grid;gap:16px;position:relative}
 .pricehead{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
 .pricehead .p{font-family:var(--display);font-size:1.9rem;font-weight:700;font-variant-numeric:tabular-nums}
