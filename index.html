@@ -1,0 +1,827 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Book Hectanooga Lake Adventure Cabin directly with the owner: a cozy 12 x 20 off-grid cabin by the water.">
+<title>Hectanooga Lake Adventure Cabin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: photo-led listing — gallery up top, reading column + sticky booking card, full-width availability calendar, owner dashboard in an overlay */
+:root{
+  --bg:#f3f5f1; --surface:#ffffff; --surface-2:#e8ede6; --ink:#17231e; --muted:#5a6a61; --line:#d4dcd4;
+  --spruce:#2e5c49; --spruce-ink:#ffffff; --spruce-soft:#dbe8df; --lake:#356a84; --ember:#b8692a; --ember-soft:#f5e4d1;
+  --booked:#e6eae5; --booked-ink:#a1aca5; --danger:#b03f2c; --ok:#2c7a4b; --overlay:rgba(14,22,18,.55);
+  --shadow:0 1px 2px rgba(20,35,28,.06),0 10px 30px rgba(20,35,28,.10);
+  --display:"Bricolage Grotesque","Avenir Next",system-ui,sans-serif;
+  --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r:16px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e1512; --surface:#16201b; --surface-2:#1d2923; --ink:#e6eee9; --muted:#9caea4; --line:#2a3832;
+  --spruce:#74b896; --spruce-ink:#0a1410; --spruce-soft:#21372c; --lake:#86b9d2; --ember:#e7a764; --ember-soft:#3a2a1a;
+  --booked:#1b2520; --booked-ink:#56675e; --danger:#e88470; --ok:#72cf98; --overlay:rgba(0,0,0,.65);
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px rgba(0,0,0,.4); color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0e1512; --surface:#16201b; --surface-2:#1d2923; --ink:#e6eee9; --muted:#9caea4; --line:#2a3832;
+  --spruce:#74b896; --spruce-ink:#0a1410; --spruce-soft:#21372c; --lake:#86b9d2; --ember:#e7a764; --ember-soft:#3a2a1a;
+  --booked:#1b2520; --booked-ink:#56675e; --danger:#e88470; --ok:#72cf98; --overlay:rgba(0,0,0,.65);
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px rgba(0,0,0,.4); color-scheme:dark }
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.12;text-wrap:balance;margin:0;letter-spacing:-.01em}
+h2{font-size:clamp(1.5rem,2.4vw,1.9rem)}
+h3{font-size:1.15rem}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--lake);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.eyebrow{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.muted{color:var(--muted)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;padding:12px 18px;font-weight:600;transition:transform .15s,background .15s,opacity .15s}
+.btn:active{transform:scale(.98)}
+.btn.primary{background:var(--spruce);color:var(--spruce-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.primary[disabled]{opacity:.45;cursor:not-allowed;filter:none}
+.btn.ghost{background:transparent;border:1px solid var(--line)}
+.btn.ghost:hover{background:var(--surface-2)}
+.btn.soft{background:var(--surface-2)}
+.btn.danger{background:transparent;color:var(--danger);border:1px solid currentColor}
+.btn.sm{padding:7px 12px;font-size:.88rem;border-radius:10px}
+.btn.block{width:100%}
+.linkbtn{background:none;border:0;padding:0;color:var(--ink);text-decoration:underline;text-underline-offset:3px;font-weight:600}
+
+/* header */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.topin{display:flex;align-items:center;gap:24px;height:64px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-family:var(--display);font-weight:700;font-size:1.05rem;white-space:nowrap}
+.brand svg{flex:none}
+.topnav{display:flex;gap:22px;margin-left:auto}
+.topnav a{color:var(--muted);text-decoration:none;font-weight:500;font-size:.95rem}
+.topnav a:hover{color:var(--ink)}
+#ownerBtn{margin-left:8px}
+@media (max-width:860px){.topnav{display:none}#ownerBtn{margin-left:auto}}
+
+/* intro */
+.intro{padding-block:36px 22px;display:grid;gap:10px}
+.intro h1{font-size:clamp(2rem,5vw,3.4rem);font-weight:700}
+.intro .tag{font-size:1.12rem;color:var(--muted);max-width:62ch}
+.introrow{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;color:var(--muted);font-size:.95rem}
+.introrow b{color:var(--ink)}
+
+/* gallery */
+.gallery{position:relative;display:grid;gap:8px;border-radius:22px;overflow:hidden;grid-template-columns:2fr 1fr 1fr;grid-template-rows:230px 230px}
+.gallery .ph{border:0;padding:0;margin:0;background:var(--surface-2);overflow:hidden;position:relative;min-width:0}
+.gallery .ph img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
+.gallery .ph:hover img{transform:scale(1.04)}
+.gallery .ph:first-child{grid-row:span 2}
+.gallery.n3,.gallery.n4{grid-template-columns:2fr 1fr}
+.gallery.n2{grid-template-columns:1fr 1fr;grid-template-rows:420px}
+.gallery.n2 .ph:first-child{grid-row:auto}
+.gallery.n1{grid-template-columns:1fr;grid-template-rows:460px}
+.showall{position:absolute;right:16px;bottom:16px;background:var(--surface);color:var(--ink);border:1px solid var(--line);box-shadow:var(--shadow)}
+@media (max-width:760px){
+  .gallery,.gallery.n1,.gallery.n2,.gallery.n3,.gallery.n4{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;border-radius:18px;grid-template-rows:none}
+  .gallery .ph{flex:0 0 86%;aspect-ratio:4/3;scroll-snap-align:start;border-radius:14px}
+  .gallery .ph:first-child{grid-row:auto}
+  .showall{position:static;margin-top:10px}
+  .galwrap{display:grid}
+}
+
+/* layout */
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:64px;padding-block:44px 80px;align-items:start}
+.content{display:grid;gap:52px;min-width:0}
+.content section{display:grid;gap:18px;min-width:0}
+.content section+section{border-top:1px solid var(--line);padding-top:48px}
+@media (max-width:960px){.layout{grid-template-columns:minmax(0,1fr);gap:40px}.book{order:-1}}
+
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+.fact{padding:18px 20px;display:grid;gap:4px;min-width:0}
+.fact+.fact{border-left:1px solid var(--line)}
+.fact .v{font-family:var(--display);font-size:1.3rem;font-weight:600;line-height:1.2}
+.fact .l{font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600}
+@media (max-width:640px){.facts{grid-template-columns:1fr 1fr}.fact:nth-child(3){border-left:0}.fact:nth-child(n+3){border-top:1px solid var(--line)}}
+
+.desc{display:grid;gap:14px;max-width:66ch;font-size:1.05rem}
+.amen{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 28px}
+.amen li{display:flex;gap:12px;align-items:flex-start}
+.amen .ic{flex:none;width:36px;height:36px;border-radius:10px;background:var(--spruce-soft);color:var(--spruce);display:grid;place-items:center}
+.amen .ic svg{width:20px;height:20px}
+.amen span{padding-top:6px}
+@media (max-width:640px){.amen{grid-template-columns:1fr}}
+
+.times{display:flex;flex-wrap:wrap;gap:12px}
+.time{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 18px;display:grid}
+.time b{font-family:var(--display);font-size:1.15rem}
+.rules{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.rules li{display:flex;gap:12px;align-items:baseline}
+.rules li::before{content:"";flex:none;width:7px;height:7px;border-radius:2px;background:var(--ember);transform:translateY(-2px) rotate(45deg)}
+
+.host{display:flex;gap:18px;align-items:center;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px}
+.avatar{width:56px;height:56px;border-radius:50%;background:var(--spruce);color:var(--spruce-ink);display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:1.3rem;flex:none}
+.hostinfo{display:grid;gap:2px;min-width:0;flex:1}
+.contactrow{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center}
+.contactrow span{user-select:all;overflow-wrap:anywhere}
+
+/* booking card */
+.book{position:sticky;top:calc(env(safe-area-inset-top,0px) + 88px);min-width:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:24px;display:grid;gap:16px;position:relative}
+.pricehead{display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+.pricehead .p{font-family:var(--display);font-size:1.9rem;font-weight:700;font-variant-numeric:tabular-nums}
+.pricehead .rate{margin-left:auto;font-size:.85rem;color:var(--muted)}
+.datebox{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.datebox button{background:var(--surface);border:0;text-align:left;padding:10px 14px;display:grid;gap:0;min-width:0}
+.datebox button+button{border-left:1px solid var(--line)}
+.datebox button:hover{background:var(--surface-2)}
+.datebox button.on{box-shadow:inset 0 0 0 2px var(--ink);border-radius:14px}
+.datebox small,.field small{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+.datebox b{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.datebox b.ph{color:var(--muted);font-weight:500}
+.guests{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--line);border-radius:14px;padding:8px 8px 8px 14px}
+.guests .gl{display:grid}
+.stepper{display:flex;align-items:center;gap:10px}
+.stepper button{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--surface);font-size:1.1rem;line-height:1;display:grid;place-items:center}
+.stepper button[disabled]{opacity:.35;cursor:not-allowed}
+.stepper output{min-width:1.5ch;text-align:center;font-weight:600;font-variant-numeric:tabular-nums}
+.breakdown{display:grid;gap:8px;font-size:.95rem}
+.breakdown .row{display:flex;justify-content:space-between;gap:12px;font-variant-numeric:tabular-nums}
+.breakdown .row.total{border-top:1px solid var(--line);padding-top:12px;font-weight:700;font-size:1.05rem}
+.note{font-size:.85rem;color:var(--muted);text-align:center}
+.secure{display:flex;align-items:center;justify-content:center;gap:6px;font-size:.82rem;color:var(--muted)}
+
+.popover{position:absolute;top:150px;right:0;z-index:30;width:min(720px,calc(100vw - 32px));background:var(--surface);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:22px;display:grid;gap:14px}
+.pophead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.popfoot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+@media (max-width:960px){.popover{right:auto;left:0;width:100%}}
+
+/* calendar */
+.cal{position:relative;display:grid;gap:10px}
+.calnav{position:absolute;top:-4px;inset-inline:0;display:flex;justify-content:space-between;pointer-events:none}
+.calnav button{pointer-events:auto;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center}
+.calnav button:hover{background:var(--surface-2)}
+.calnav button[disabled]{opacity:.3;cursor:not-allowed}
+.months{display:grid;grid-template-columns:repeat(var(--m,2),minmax(0,1fr));gap:36px}
+.month{display:grid;gap:8px;min-width:0}
+.month h4{margin:0;text-align:center;font-family:var(--display);font-weight:600;font-size:1.05rem;height:28px;line-height:28px}
+.wk,.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+.wk span{text-align:center;font-size:.72rem;font-weight:700;color:var(--muted);letter-spacing:.06em;padding-bottom:4px}
+.day{position:relative;aspect-ratio:1;border:0;background:none;padding:0;display:grid;place-items:center;font-variant-numeric:tabular-nums;font-weight:500;font-size:.95rem;min-width:0}
+.day i{font-style:normal;width:min(44px,92%);aspect-ratio:1;display:grid;place-items:center;border-radius:50%;position:relative;z-index:1;transition:background .12s}
+.day:not([disabled]):hover i{box-shadow:inset 0 0 0 1.5px var(--ink)}
+.day[disabled]{cursor:default}
+.day.past{color:var(--booked-ink)}
+.day.taken{color:var(--booked-ink)}
+.day.taken i{text-decoration:line-through;text-decoration-thickness:1.5px}
+.day.today i{box-shadow:inset 0 0 0 1.5px var(--line);font-weight:700}
+.day.range::before,.day.hov::before,.day.start.hasend::before,.day.end::before{content:"";position:absolute;inset:8% 0;background:var(--spruce-soft)}
+.day.start.hasend::before{left:50%}
+.day.end::before{right:50%}
+.day.start i,.day.end i{background:var(--spruce);color:var(--spruce-ink);font-weight:700}
+.day.short{color:var(--muted)}
+.day.coonly i{text-decoration:none}
+.day.coonly{color:var(--ink)}
+.cal.admin .day.blocked i{background:var(--ember-soft);color:var(--ember);text-decoration:none;font-weight:700}
+.cal.admin .day.booked i{background:var(--spruce-soft);color:var(--spruce);text-decoration:none;font-weight:700}
+.legend{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:.85rem;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:8px}
+.legend i{width:16px;height:16px;border-radius:50%;display:inline-block}
+.lg-av{box-shadow:inset 0 0 0 1.5px var(--ink)}
+.lg-bk{background:var(--booked);position:relative}
+.lg-sel{background:var(--spruce)}
+.lg-bl{background:var(--ember-soft);box-shadow:inset 0 0 0 1.5px var(--ember)}
+.lg-bo{background:var(--spruce-soft);box-shadow:inset 0 0 0 1.5px var(--spruce)}
+.availcard{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px;display:grid;gap:18px}
+.selsum{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:16px}
+.hint{font-size:.9rem;color:var(--muted)}
+
+/* mobile bar */
+.mbar{display:none}
+@media (max-width:960px){
+  .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:25;background:var(--surface);border-top:1px solid var(--line);align-items:center;gap:12px;justify-content:space-between;
+    padding:12px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+  .mbar .p{font-family:var(--display);font-weight:700;font-size:1.15rem}
+  footer{padding-bottom:110px!important}
+}
+
+footer{border-top:1px solid var(--line);padding-block:32px 40px;color:var(--muted);font-size:.9rem}
+.foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+
+/* modals */
+.modal{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.modal .scrim{position:absolute;inset:0;background:var(--overlay);animation:fade .2s ease}
+.sheet{position:relative;background:var(--surface);border-radius:22px;box-shadow:var(--shadow);width:min(560px,100%);max-height:100%;overflow:auto;padding:28px;display:grid;gap:20px;animation:rise .25s ease}
+.sheet.wide{width:min(1000px,100%)}
+.sheethead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.x{width:38px;height:38px;border-radius:50%;border:0;background:var(--surface-2);display:grid;place-items:center;flex:none}
+@keyframes fade{from{opacity:0}}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}}
+@media (prefers-reduced-motion:reduce){*,*::before{animation:none!important;transition:none!important}}
+
+.steps{display:flex;gap:8px;align-items:center;font-size:.85rem;color:var(--muted)}
+.steps b{color:var(--ink)}
+.steps .bar{flex:1;height:4px;border-radius:4px;background:var(--surface-2);overflow:hidden}
+.steps .bar i{display:block;height:100%;background:var(--spruce);transition:width .3s}
+.trip{display:flex;gap:14px;align-items:center;background:var(--surface-2);border-radius:14px;padding:12px}
+.trip img{width:84px;height:64px;object-fit:cover;border-radius:10px;flex:none}
+.trip div{min-width:0}
+.form{display:grid;gap:14px}
+.form .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form .three{display:grid;grid-template-columns:1.2fr .8fr .8fr;gap:14px}
+@media (max-width:520px){.form .two,.form .three{grid-template-columns:1fr}}
+.field{display:grid;gap:6px;min-width:0}
+.field label{font-weight:600;font-size:.9rem}
+.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:11px 13px;min-width:0}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--spruce);box-shadow:0 0 0 3px var(--spruce-soft)}
+.field textarea{resize:vertical;min-height:90px;line-height:1.5}
+.field .err{color:var(--danger);font-size:.82rem;min-height:0}
+.field.bad input{border-color:var(--danger)}
+.field .help{font-size:.82rem;color:var(--muted)}
+.demo{display:flex;gap:12px;align-items:flex-start;background:var(--ember-soft);border-radius:14px;padding:12px 14px;font-size:.9rem}
+.demo b{display:block}
+.cardin{position:relative}
+.cardin input{padding-right:64px;letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.cardin .brandtag{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:.72rem;font-weight:800;letter-spacing:.08em;color:var(--muted)}
+.done{text-align:center;display:grid;gap:12px;justify-items:center;padding-block:10px}
+.done .tick{width:72px;height:72px;border-radius:50%;background:var(--spruce);color:var(--spruce-ink);display:grid;place-items:center}
+.code{font-family:var(--display);font-size:1.4rem;font-weight:700;letter-spacing:.08em;background:var(--surface-2);padding:8px 16px;border-radius:12px}
+.spin{width:18px;height:18px;border-radius:50%;border:2.5px solid currentColor;border-right-color:transparent;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* lightbox */
+.lb{position:fixed;inset:0;z-index:60;background:#0b0f0d;color:#f2f5f3;display:grid;grid-template-rows:auto 1fr auto;padding:max(12px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.lbtop{display:flex;justify-content:space-between;align-items:center;padding-block:6px}
+.lb .x{background:#222a26;color:#f2f5f3}
+.lbstage{position:relative;display:grid;place-items:center;min-height:0}
+.lbstage img{max-width:100%;max-height:100%;object-fit:contain;border-radius:10px}
+.lbnav{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;border:0;background:rgba(255,255,255,.9);color:#111;display:grid;place-items:center}
+.lbnav.prev{left:0}.lbnav.next{right:0}
+.lbcap{text-align:center;padding-top:12px;font-size:1rem}
+
+/* admin */
+.adm{display:grid;grid-template-columns:200px minmax(0,1fr);gap:28px;min-height:420px}
+.tabs{display:grid;align-content:start;gap:4px}
+.tabs button{text-align:left;border:0;background:none;padding:10px 12px;border-radius:10px;font-weight:600;color:var(--muted)}
+.tabs button[aria-selected="true"]{background:var(--spruce-soft);color:var(--ink)}
+.tabs .sep{height:1px;background:var(--line);margin:10px 0}
+.pane{display:grid;gap:18px;align-content:start;min-width:0}
+.pane h3{font-size:1.3rem}
+@media (max-width:760px){.adm{grid-template-columns:1fr}.tabs{display:flex;overflow-x:auto;gap:4px}.tabs button{white-space:nowrap}.tabs .sep{display:none}}
+.phgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px}
+.phitem{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--bg);display:grid}
+.phitem img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.phitem .meta{padding:10px;display:grid;gap:8px}
+.phitem input{width:100%;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:6px 8px;font-size:.88rem}
+.phbtns{display:flex;gap:4px;flex-wrap:wrap}
+.phbtns button{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:4px 8px;font-size:.8rem}
+.phbtns button.del{color:var(--danger);margin-left:auto}
+.cover{position:absolute;top:8px;left:8px;background:var(--spruce);color:var(--spruce-ink);font-size:.7rem;font-weight:700;padding:3px 8px;border-radius:20px;letter-spacing:.06em}
+.drop{border:2px dashed var(--line);border-radius:14px;padding:22px;text-align:center;display:grid;gap:8px;justify-items:center;background:var(--bg)}
+.drop.over{border-color:var(--spruce);background:var(--spruce-soft)}
+.blist{display:grid;gap:10px}
+.bitem{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 16px;border:1px solid var(--line);border-radius:14px;padding:14px 16px;background:var(--bg);align-items:center}
+.bitem .who{font-weight:700}
+.bitem .sub{font-size:.88rem;color:var(--muted);overflow-wrap:anywhere}
+.pill{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:20px;background:var(--spruce-soft);color:var(--spruce)}
+.pill.c{background:var(--surface-2);color:var(--muted)}
+.pill.s{background:var(--ember-soft);color:var(--ember)}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.stat{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.stat b{display:block;font-family:var(--display);font-size:1.5rem;font-variant-numeric:tabular-nums}
+.stat span{font-size:.82rem;color:var(--muted)}
+@media (max-width:520px){.stats{grid-template-columns:1fr}}
+.adminbadge{position:fixed;left:max(16px,env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:24;box-shadow:var(--shadow)}
+@media (max-width:960px){.adminbadge{bottom:calc(84px + env(safe-area-inset-bottom,0px))}}
+.confirmrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:80;background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:12px;font-weight:600;font-size:.92rem;box-shadow:var(--shadow);max-width:calc(100vw - 32px)}
+@media (max-width:960px){.toast{bottom:calc(92px + env(safe-area-inset-bottom,0px))}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap topin">
+    <a class="brand" href="#top" id="brandLink">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path d="M14 3 3 12h3v12h16V12h3z" fill="var(--spruce)"/><rect x="11.5" y="16" width="5" height="8" rx="1" fill="var(--bg)"/><path d="M3 25h22" stroke="var(--lake)" stroke-width="2" stroke-linecap="round"/></svg>
+      <span id="brandName">Hectanooga Lake</span>
+    </a>
+    <nav class="topnav" aria-label="Sections">
+      <a href="#photos">Photos</a><a href="#details">The cabin</a><a href="#availability">Availability</a><a href="#rules">House rules</a><a href="#contact">Contact</a>
+    </nav>
+    <button class="btn ghost sm" id="ownerBtn">Owner login</button>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap">
+    <section class="intro">
+      <span class="eyebrow" id="locLine">Hectanooga Lake</span>
+      <h1 id="siteName">Hectanooga Lake Adventure Cabin</h1>
+      <p class="tag" id="tagline"></p>
+    </section>
+    <div class="galwrap">
+      <section id="photos" class="gallery" aria-label="Photos"></section>
+    </div>
+
+    <div class="layout">
+      <div class="content">
+        <section id="details">
+          <div class="facts" id="facts"></div>
+          <h2>About the cabin</h2>
+          <div class="desc" id="desc"></div>
+        </section>
+        <section>
+          <h2>What's at the cabin</h2>
+          <ul class="amen" id="amen"></ul>
+        </section>
+        <section id="availability">
+          <div style="display:grid;gap:6px">
+            <h2>Availability</h2>
+            <p class="muted" id="availHint">Pick your check-in date, then your check-out date.</p>
+          </div>
+          <div class="availcard">
+            <div class="legend">
+              <span><i class="lg-av"></i>Available</span>
+              <span><i class="lg-bk"></i>Booked</span>
+              <span><i class="lg-sel"></i>Your stay</span>
+            </div>
+            <div class="cal" id="calMain"></div>
+            <div class="selsum">
+              <div id="selText" class="hint">No dates selected</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <button class="btn ghost sm" id="clearMain">Clear dates</button>
+                <button class="btn primary sm" id="reserveMain" disabled>Reserve these dates</button>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section id="rules">
+          <h2>House rules</h2>
+          <div class="times" id="times"></div>
+          <ul class="rules" id="ruleList"></ul>
+        </section>
+        <section id="contact">
+          <h2>Questions before you book?</h2>
+          <div class="host" id="host"></div>
+        </section>
+      </div>
+
+      <aside class="book" aria-label="Book your stay">
+        <div class="card" id="bookCard">
+          <div class="pricehead"><span class="p" id="bPrice">$XXX</span><span class="muted">/ night</span><span class="rate" id="bMin"></span></div>
+          <div class="datebox">
+            <button id="bIn" aria-haspopup="dialog"><small>Check-in</small><b class="ph">Add date</b></button>
+            <button id="bOut" aria-haspopup="dialog"><small>Check-out</small><b class="ph">Add date</b></button>
+          </div>
+          <div class="guests">
+            <div class="gl"><small class="eyebrow" style="font-size:.7rem">Guests</small><span id="gMax" class="muted" style="font-size:.85rem"></span></div>
+            <div class="stepper"><button id="gMinus" aria-label="Fewer guests">−</button><output id="gCount">2</output><button id="gPlus" aria-label="More guests">+</button></div>
+          </div>
+          <div class="popover" id="pop" role="dialog" aria-label="Choose dates" hidden>
+            <div class="pophead">
+              <div><h3 id="popTitle">Select check-in date</h3><p class="hint" id="popSub">Minimum stay applies</p></div>
+              <button class="x" id="popClose" aria-label="Close calendar"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+            </div>
+            <div class="cal" id="calPop"></div>
+            <div class="popfoot"><button class="linkbtn" id="popClear">Clear dates</button><button class="btn primary sm" id="popDone">Done</button></div>
+          </div>
+          <button class="btn primary block" id="reserve" style="padding-block:15px;font-size:1.02rem">Check availability</button>
+          <div class="breakdown" id="breakdown" hidden></div>
+          <div class="secure"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Book direct with the owner. Pay securely by card.</div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span id="footName">© Hectanooga Lake Adventure Cabin</span>
+    <button class="linkbtn" id="ownerFoot" style="color:var(--muted);font-weight:500">Owner login</button>
+  </div>
+</footer>
+
+<div class="mbar" id="mbar">
+  <div><div><span class="p" id="mPrice">$XXX</span> <span class="muted">/ night</span></div><div class="hint" id="mDates">Add your dates</div></div>
+  <button class="btn primary" id="mBtn">Check availability</button>
+</div>
+
+<button class="btn primary sm adminbadge" id="adminBadge" hidden>
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg>Edit site
+</button>
+
+<div class="modal" id="mCheckout" hidden><div class="scrim" data-close></div><div class="sheet" id="coSheet" role="dialog" aria-modal="true" aria-label="Book your stay"></div></div>
+<div class="modal" id="mLogin" hidden><div class="scrim" data-close></div>
+  <form class="sheet" id="loginForm" role="dialog" aria-modal="true" aria-label="Owner login" style="width:min(420px,100%)">
+    <div class="sheethead"><div><span class="eyebrow">Owner area</span><h2 style="margin-top:4px">Sign in</h2></div><button type="button" class="x" data-close aria-label="Close"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
+    <div class="field"><label for="loginPw">Password</label><input id="loginPw" type="password" autocomplete="current-password"><span class="err" id="loginErr"></span></div>
+    <div class="demo"><div><b>Sample version</b>Use the password <strong>cabin</strong> to try the owner dashboard.</div></div>
+    <button class="btn primary block" type="submit">Sign in</button>
+  </form>
+</div>
+<div class="modal" id="mAdmin" hidden><div class="scrim" data-close></div><div class="sheet wide" id="admSheet" role="dialog" aria-modal="true" aria-label="Owner dashboard"></div></div>
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Photos">
+  <div class="lbtop"><span id="lbCount"></span><button class="x" id="lbClose" aria-label="Close photos"><svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button></div>
+  <div class="lbstage"><img id="lbImg" alt=""><button class="lbnav prev" id="lbPrev" aria-label="Previous photo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg></button><button class="lbnav next" id="lbNext" aria-label="Next photo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg></button></div>
+  <div class="lbcap" id="lbCap"></div>
+</div>
+<div class="toast" id="toast" hidden role="status"></div>
+
+<script>
+(function(){
+"use strict";
+/* ---------- sample photos (illustrations, replaceable by the owner) ---------- */
+const f=n=>n.toFixed(1);
+function R(seed){let s=seed;return()=>{s=(s*16807)%2147483647;return (s-1)/2147483646}}
+function pine(x,base,h,fill){let s='';const w=h*.46;for(let i=0;i<4;i++){const top=base-h+i*h*.18,bw=w*(.4+i*.22),bot=top+h*.34;s+=`<polygon points="${f(x)},${f(top)} ${f(x-bw/2)},${f(bot)} ${f(x+bw/2)},${f(bot)}" fill="${fill}"/>`}return s+`<rect x="${f(x-h*.025)}" y="${f(base-h*.13)}" width="${f(h*.05)}" height="${f(h*.13)}" fill="${fill}"/>`}
+function treeline(y,n,a,b,fill,seed,x0=-20,x1=1220){const r=R(seed);let s='';for(let i=0;i<n;i++){const x=x0+(x1-x0)*i/n+r()*18;s+=pine(x,y,a+r()*(b-a),fill)}return s}
+function svg(s){return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">${s}</svg>`)}
+
+function sceneCabin(){const r=R(7);let s=`<defs><linearGradient id="a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#25325d"/><stop offset=".45" stop-color="#6b5a8d"/><stop offset=".78" stop-color="#e59169"/><stop offset="1" stop-color="#f6c88d"/></linearGradient><linearGradient id="b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d89478"/><stop offset=".45" stop-color="#7a6687"/><stop offset="1" stop-color="#2b3251"/></linearGradient><radialGradient id="g"><stop offset="0" stop-color="#ffd27a" stop-opacity=".75"/><stop offset="1" stop-color="#ffd27a" stop-opacity="0"/></radialGradient></defs>`;
+s+=`<rect width="1200" height="525" fill="url(#a)"/><circle cx="860" cy="482" r="120" fill="#ffe2ad" opacity=".25"/><circle cx="860" cy="482" r="66" fill="#ffe2ad" opacity=".9"/>`;
+s+=`<polygon points="0,470 160,432 330,455 520,408 720,446 900,416 1060,440 1200,422 1200,526 0,526" fill="#554a70"/>`+treeline(524,64,26,78,'#342e4e',3);
+s+=`<rect y="520" width="1200" height="280" fill="url(#b)"/>`;
+for(let i=0;i<16;i++)s+=`<ellipse cx="${f(860+(r()-.5)*90)}" cy="${540+i*15}" rx="${84-i*4}" ry="2.2" fill="#ffe2ad" opacity="${f(.55-i*.03)}"/>`;
+s+=`<path d="M0 600C200 572 420 560 640 586C720 596 790 650 830 800L0 800Z" fill="#1c2524"/>`;
+s+=`<circle cx="470" cy="378" r="10" fill="#d8cde0" opacity=".35"/><circle cx="482" cy="350" r="15" fill="#d8cde0" opacity=".25"/><circle cx="500" cy="316" r="20" fill="#d8cde0" opacity=".15"/>`;
+s+=`<rect x="458" y="392" width="22" height="70" fill="#393a40"/>`;
+s+=`<polygon points="262,472 385,394 508,472" fill="#7b563c"/><rect x="255" y="470" width="260" height="122" fill="#6d4a33"/>`;
+for(let y=482;y<590;y+=14)s+=`<line x1="255" y1="${y}" x2="515" y2="${y}" stroke="#583a27" stroke-width="2"/>`;
+s+=`<polygon points="228,482 385,376 542,482 526,488 385,394 244,488" fill="#29262a"/>`;
+s+=`<circle cx="327" cy="527" r="110" fill="url(#g)"/><rect x="295" y="500" width="64" height="54" fill="#ffd07a"/><rect x="325" y="500" width="4" height="54" fill="#583a27"/><rect x="295" y="525" width="64" height="4" fill="#583a27"/>`;
+s+=`<circle cx="385" cy="442" r="12" fill="#ffd07a"/><rect x="415" y="510" width="52" height="82" fill="#4a2f20"/><circle cx="457" cy="553" r="3" fill="#d9a65b"/>`;
+s+=`<rect x="238" y="590" width="294" height="10" fill="#4a3426"/><rect x="422" y="600" width="40" height="8" fill="#3f2c20"/>`;
+s+=pine(110,670,440,'#111918')+pine(190,650,300,'#152020')+pine(625,612,270,'#131c1c')+pine(712,648,350,'#0f1717');
+return svg(s)}
+
+function sceneLake(){const r=R(11);let s=`<defs><linearGradient id="a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c7dde8"/><stop offset="1" stop-color="#f5ebdb"/></linearGradient><linearGradient id="b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bcd3dc"/><stop offset="1" stop-color="#557c90"/></linearGradient></defs>`;
+s+=`<rect width="1200" height="450" fill="url(#a)"/><circle cx="330" cy="250" r="130" fill="#fff6e0" opacity=".35"/><circle cx="330" cy="250" r="48" fill="#fff8e6"/>`;
+s+=`<polygon points="0,410 220,380 420,402 640,370 860,398 1040,378 1200,396 1200,452 0,452" fill="#a7bcc5"/>`+treeline(448,80,22,58,'#7b939c',11);
+s+=`<rect y="446" width="1200" height="354" fill="url(#b)"/><rect y="410" width="1200" height="70" fill="#eef3f3" opacity=".45"/>`;
+for(let i=0;i<12;i++)s+=`<ellipse cx="${f(330+(r()-.5)*80)}" cy="${470+i*18}" rx="${70-i*4}" ry="2" fill="#fff8e6" opacity="${f(.6-i*.04)}"/>`;
+s+=`<polygon points="470,800 730,800 640,520 560,520" fill="#8a6a4c"/>`;
+for(let i=1;i<=18;i++){const t=Math.pow(i/18,1.6),y=520+280*t,hw=40+90*t;s+=`<line x1="${f(600-hw)}" y1="${f(y)}" x2="${f(600+hw)}" y2="${f(y)}" stroke="#6b5139" stroke-width="${f(1+t*3)}"/>`}
+s+=`<rect x="556" y="508" width="8" height="30" fill="#5d4532"/><rect x="636" y="508" width="8" height="30" fill="#5d4532"/>`;
+s+=`<path d="M770 668Q890 708 1020 656Q895 684 770 668Z" fill="#c4553a"/><path d="M790 668Q895 690 1000 662" stroke="#8e3a27" stroke-width="3" fill="none"/><line x1="860" y1="640" x2="960" y2="700" stroke="#6b4a32" stroke-width="5" stroke-linecap="round"/>`;
+for(let i=0;i<22;i++){const x=10+i*9+r()*6;s+=`<line x1="${f(x)}" y1="800" x2="${f(x+(r()-.5)*30)}" y2="${f(640+r()*80)}" stroke="#4f6b45" stroke-width="3" stroke-linecap="round"/>`}
+return svg(s)}
+
+function sceneInside(){const r=R(5);let s=`<defs><linearGradient id="a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d6e7ee"/><stop offset="1" stop-color="#a6c5d0"/></linearGradient><radialGradient id="g"><stop offset="0" stop-color="#ffcf73" stop-opacity=".55"/><stop offset="1" stop-color="#ffcf73" stop-opacity="0"/></radialGradient><radialGradient id="fi"><stop offset="0" stop-color="#ffe08a"/><stop offset=".6" stop-color="#f08a35"/><stop offset="1" stop-color="#8a2f16"/></radialGradient><pattern id="p" width="40" height="40" patternUnits="userSpaceOnUse"><rect width="40" height="40" fill="#a8342b"/><rect y="16" width="40" height="8" fill="#2d4a3a" opacity=".8"/><rect x="16" width="8" height="40" fill="#2d4a3a" opacity=".7"/><rect y="19" width="40" height="2" fill="#e9d9b5" opacity=".6"/></pattern><clipPath id="c"><rect x="705" y="165" width="290" height="220"/></clipPath></defs>`;
+for(let x=0;x<1200;x+=60)s+=`<rect x="${x}" width="60" height="620" fill="${(x/60)%2?'#ad7f53':'#b98b5e'}"/><line x1="${x}" y1="0" x2="${x}" y2="620" stroke="#8c633f" stroke-width="2"/>`;
+s+=`<rect y="620" width="1200" height="180" fill="#6e4d33"/>`;for(let y=640;y<800;y+=26)s+=`<line x1="0" y1="${y}" x2="1200" y2="${y}" stroke="#5c3f29" stroke-width="2"/>`;
+s+=`<rect x="690" y="150" width="320" height="250" fill="#5a3e2a"/><rect x="705" y="165" width="290" height="220" fill="url(#a)"/><g clip-path="url(#c)">${treeline(395,9,120,210,'#3f6450',2,690,1010)}</g><rect x="846" y="165" width="8" height="220" fill="#5a3e2a"/><rect x="705" y="271" width="290" height="8" fill="#5a3e2a"/><rect x="680" y="398" width="340" height="12" fill="#4b3322"/>`;
+s+=`<circle cx="560" cy="150" r="190" fill="url(#g)"/><line x1="560" y1="0" x2="560" y2="118" stroke="#2b2b2b" stroke-width="3"/><rect x="544" y="118" width="32" height="44" rx="4" fill="#3a3a3a"/><rect x="550" y="126" width="20" height="28" fill="#ffd98a"/>`;
+s+=`<ellipse cx="282" cy="640" rx="220" ry="34" fill="#ffb35c" opacity=".22"/><rect x="268" y="0" width="28" height="420" fill="#2a2a2c"/><rect x="190" y="410" width="185" height="16" rx="3" fill="#202022"/><rect x="200" y="424" width="165" height="158" rx="8" fill="#2b2b2d"/><rect x="226" y="452" width="112" height="84" rx="6" fill="#18181a"/><rect x="234" y="460" width="96" height="68" rx="4" fill="url(#fi)"/>`;
+s+=`<polygon points="250,528 268,486 282,528" fill="#ffe08a"/><polygon points="276,528 296,474 314,528" fill="#ffd06a"/><rect x="212" y="582" width="14" height="34" fill="#202022"/><rect x="340" y="582" width="14" height="34" fill="#202022"/>`;
+for(let i=0;i<9;i++){const cx=420+(i%3)*30+(Math.floor(i/3)%2)*15,cy=600-Math.floor(i/3)*26;s+=`<circle cx="${cx}" cy="${cy}" r="14" fill="#a6743f" stroke="#6b4526" stroke-width="3"/><circle cx="${cx}" cy="${cy}" r="6" fill="none" stroke="#7d5330" stroke-width="2"/>`}
+s+=`<ellipse cx="600" cy="712" rx="270" ry="54" fill="#7a3b2c"/><ellipse cx="600" cy="712" rx="230" ry="40" fill="none" stroke="#c98a4a" stroke-width="3" stroke-dasharray="10 8"/>`;
+s+=`<rect x="640" y="510" width="540" height="110" fill="#5c3f29"/><rect x="650" y="470" width="520" height="44" rx="10" fill="#efe6d6"/><rect x="770" y="478" width="400" height="70" rx="8" fill="url(#p)"/><ellipse cx="712" cy="470" rx="54" ry="22" fill="#f6f0e4"/>`;
+return svg(s)}
+
+function sceneNight(){const r=R(19);let s=`<defs><linearGradient id="a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#060c20"/><stop offset="1" stop-color="#1c2b54"/></linearGradient><radialGradient id="g"><stop offset="0" stop-color="#ff9a3c" stop-opacity=".6"/><stop offset="1" stop-color="#ff9a3c" stop-opacity="0"/></radialGradient></defs><rect width="1200" height="800" fill="url(#a)"/>`;
+s+=`<ellipse cx="600" cy="250" rx="720" ry="95" transform="rotate(-16 600 250)" fill="#a8b8ea" opacity=".08"/><ellipse cx="600" cy="250" rx="600" ry="40" transform="rotate(-16 600 250)" fill="#c8d2f5" opacity=".07"/>`;
+for(let i=0;i<280;i++)s+=`<circle cx="${f(r()*1200)}" cy="${f(r()*540)}" r="${f(.5+r()*r()*2)}" fill="#fff" opacity="${f(.35+r()*.65)}"/>`;
+s+=`<rect y="545" width="1200" height="255" fill="#0c1733"/>`;for(let i=0;i<40;i++)s+=`<rect x="${f(r()*1200)}" y="${f(560+r()*90)}" width="${f(6+r()*20)}" height="1.5" fill="#cdd6f5" opacity=".25"/>`;
+s+=treeline(552,84,28,90,'#050a16',5)+`<path d="M0 690Q600 640 1200 700L1200 800L0 800Z" fill="#04070f"/>`;
+s+=`<circle cx="600" cy="700" r="190" fill="url(#g)"/><rect x="540" y="712" width="120" height="14" rx="7" transform="rotate(12 600 719)" fill="#3a2416"/><rect x="540" y="712" width="120" height="14" rx="7" transform="rotate(-12 600 719)" fill="#4a2e1b"/>`;
+s+=`<polygon points="566,716 590,640 612,716" fill="#ff7a2f"/><polygon points="588,716 612,620 636,716" fill="#ffb347"/><polygon points="600,716 614,664 628,716" fill="#ffe08a"/>`;
+for(let i=0;i<10;i++)s+=`<circle cx="${f(580+r()*60)}" cy="${f(560+r()*70)}" r="${f(1+r()*1.6)}" fill="#ffc46b" opacity="${f(.4+r()*.6)}"/>`;
+s+=pine(90,770,560,'#03060c')+pine(210,780,380,'#03060c')+pine(1110,780,600,'#03060c')+pine(990,790,360,'#03060c');
+return svg(s)}
+
+function sceneBirch(){const r=R(23);let s=`<defs><linearGradient id="a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eaf0cf"/><stop offset="1" stop-color="#a6c283"/></linearGradient></defs><rect width="1200" height="800" fill="url(#a)"/>`;
+for(let i=0;i<26;i++)s+=`<rect x="${f(r()*1200)}" y="0" width="${f(4+r()*8)}" height="560" fill="#e6ebd8" opacity=".55"/>`;
+for(let i=0;i<40;i++)s+=`<circle cx="${f(r()*1200)}" cy="${f(r()*200-20)}" r="${f(60+r()*90)}" fill="${['#86ab62','#6e9550','#9cbd72'][i%3]}" opacity=".55"/>`;
+s+=`<polygon points="380,0 520,0 760,800 560,800" fill="#fffbe6" opacity=".12"/><rect y="500" width="1200" height="300" fill="#7b9c59"/><path d="M540 800C580 680 610 560 630 500L652 500C670 560 720 680 800 800Z" fill="#d9c69b"/>`;
+for(let i=0;i<70;i++){const x=r()*1200;if(x>500&&x<820)continue;s+=`<ellipse cx="${f(x)}" cy="${f(560+r()*240)}" rx="${f(18+r()*26)}" ry="${f(5+r()*5)}" transform="rotate(${f((r()-.5)*70)} ${f(x)} 600)" fill="${i%2?'#4e7a3b':'#5f8a45'}"/>`}
+[[70,48,820],[230,30,700],[360,20,620],[860,24,640],[960,40,740],[1110,54,820]].forEach(([x,w,b])=>{s+=`<rect x="${x}" y="-10" width="${w}" height="${b}" fill="#f2eee4"/><rect x="${x+w*.72}" y="-10" width="${w*.28}" height="${b}" fill="#d9d3c4"/>`;for(let k=0;k<16;k++){const y=r()*b,ww=w*(.25+r()*.6);s+=`<rect x="${f(x+(r()<.5?0:w-ww))}" y="${f(y)}" width="${f(ww)}" height="${f(2+r()*5)}" rx="1.5" fill="#2b2b2b" opacity=".85"/>`}});
+return svg(s)}
+
+const SCENES={cabin:sceneCabin,lake:sceneLake,inside:sceneInside,night:sceneNight,birch:sceneBirch};
+const sceneCache={};
+function photoSrc(p){if(p.src.startsWith('scene:')){const k=p.src.slice(6);return sceneCache[k]||(sceneCache[k]=SCENES[k]?SCENES[k]():'')}return p.src}
+
+/* ---------- dates ---------- */
+const pad=n=>String(n).padStart(2,'0');
+const iso=(y,m,d)=>`${y}-${pad(m+1)}-${pad(d)}`;
+function parse(s){const [y,m,d]=s.split('-').map(Number);return{y,m:m-1,d}}
+function addDays(s,n){const p=parse(s),t=new Date(Date.UTC(p.y,p.m,p.d+n));return iso(t.getUTCFullYear(),t.getUTCMonth(),t.getUTCDate())}
+function diff(a,b){const A=parse(a),B=parse(b);return Math.round((Date.UTC(B.y,B.m,B.d)-Date.UTC(A.y,A.m,A.d))/864e5)}
+function fmt(s,o){const p=parse(s);return new Date(Date.UTC(p.y,p.m,p.d)).toLocaleDateString(undefined,Object.assign({timeZone:'UTC'},o||{month:'short',day:'numeric'}))}
+const now=new Date();const TODAY=iso(now.getFullYear(),now.getMonth(),now.getDate());
+
+/* ---------- state ---------- */
+const KEY='hectanooga-cabin-demo-v1';
+function defaults(){return{
+  name:'Hectanooga Lake Adventure Cabin',
+  location:'Hectanooga Lake',
+  tagline:'A cozy 12 × 20 off-grid cabin by the water. Wood stove, dark starry skies, and nothing on the schedule.',
+  description:'Tucked into the trees at Hectanooga Lake, this 12 × 20 ft cabin is built for slowing down. There is no grid power and no traffic noise. It is just you, the lake, the woods, and a wood stove that keeps the place warm on cool nights.\n\nSpend the day paddling, swimming off the shore, or exploring the trails. In the evening, light the fire pit, watch the stars come out, and fall asleep to the sound of the water.\n\nThe cabin is simple and comfortable, with a queen bed, a bunk, a small kitchen with a propane cooktop, and solar lights. Bring your food, your bedding, and a sense of adventure.',
+  size:'12 × 20 ft', area:'240 sq ft', power:'Off-grid, solar',
+  price:null, cleaningFee:null, taxRate:0, minNights:2, maxGuests:4,
+  checkIn:'3:00 PM', checkOut:'11:00 AM',
+  amenities:['Solar power for lights and phone charging','Wood stove for heat, with firewood supplied','Propane cooktop, pots, pans and dishes','Drinking water supplied','Private outhouse','Fire pit with lakeside seating','Canoe and paddles','Sleeps up to 4 with a queen bed and a bunk'],
+  rules:['No smoking inside the cabin','Pets by approval only, so please ask before booking','Fires only in the wood stove and the fire pit','Quiet hours after 11 PM','Pack out what you pack in'],
+  hostName:'The owner', hostEmail:'bookings@hectanoogacabin.com', hostPhone:'(555) 555-0123',
+  photos:[{id:'p1',src:'scene:cabin',caption:'The cabin at dusk'},{id:'p2',src:'scene:lake',caption:'Morning on the dock'},{id:'p3',src:'scene:inside',caption:'Wood stove, bunk and queen bed'},{id:'p4',src:'scene:night',caption:'Campfire under the stars'},{id:'p5',src:'scene:birch',caption:'The trail through the birches'}],
+  blocked:[addDays(TODAY,16),addDays(TODAY,17)],
+  bookings:[
+    {id:'s1',code:'HLC-SAMPLE1',name:'Sample booking',email:'guest@example.com',phone:'',checkIn:addDays(TODAY,8),checkOut:addDays(TODAY,11),guests:2,total:null,status:'Sample',created:TODAY},
+    {id:'s2',code:'HLC-SAMPLE2',name:'Sample booking',email:'guest@example.com',phone:'',checkIn:addDays(TODAY,24),checkOut:addDays(TODAY,28),guests:4,total:null,status:'Sample',created:TODAY},
+    {id:'s3',code:'HLC-SAMPLE3',name:'Sample booking',email:'guest@example.com',phone:'',checkIn:addDays(TODAY,43),checkOut:addDays(TODAY,46),guests:3,total:null,status:'Sample',created:TODAY}
+  ]
+}}
+let S=defaults();
+try{const raw=localStorage.getItem(KEY);if(raw){const o=JSON.parse(raw);S=Object.assign(defaults(),o)}}catch(e){}
+let saveTimer=null;
+function save(){clearTimeout(saveTimer);saveTimer=setTimeout(()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast('This browser is out of storage space. Try smaller photos.')}},250)}
+let sel={in:null,out:null};let hover=null;let guests=Math.min(2,S.maxGuests);
+let isAdmin=false;try{isAdmin=sessionStorage.getItem(KEY+'-admin')==='1'}catch(e){}
+
+/* ---------- helpers ---------- */
+const $=s=>document.querySelector(s);
+function h(tag,attrs,...kids){const el=document.createElement(tag);if(attrs)for(const k in attrs){const v=attrs[k];if(v==null||v===false)continue;if(k==='class')el.className=v;else if(k==='text')el.textContent=v;else if(k.startsWith('on'))el.addEventListener(k.slice(2),v);else el.setAttribute(k,v===true?'':v)}for(const c of kids.flat()){if(c==null||c===false)continue;el.append(c.nodeType?c:document.createTextNode(String(c)))}return el}
+function num(v){return v===null||v===''||v===undefined||isNaN(Number(v))?null:Number(v)}
+function money(n){n=num(n);if(n==null)return '$XXX';return '$'+n.toLocaleString(undefined,{minimumFractionDigits:n%1?2:0,maximumFractionDigits:2})}
+let toastT;function toast(msg){const t=$('#toast');t.textContent=msg;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>t.hidden=true,2600)}
+function nightsTxt(n){return n+(n===1?' night':' nights')}
+function quote(a,b){const n=diff(a,b),p=num(S.price),c=num(S.cleaningFee)||0,tr=num(S.taxRate)||0;if(p==null)return{n,known:false};const sub=p*n,tax=Math.round((sub+c)*tr)/100;return{n,known:true,sub,clean:c,tax,total:Math.round((sub+c+tax)*100)/100}}
+const ICONS={sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',fire:'<path d="M12 22c4 0 7-2.7 7-7 0-3.5-2.5-6-4-8-.5 2-1.5 3-3 3 0-3-1-5-3-8-1 4-4 6.5-4 11 0 5 3 9 7 9z"/>',water:'<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/>',pan:'<circle cx="10" cy="13" r="6"/><path d="M16 13h6"/>',boat:'<path d="M2 15c4 3 16 3 20 0"/><path d="M6 15 12 4l6 11"/>',bed:'<path d="M3 18V8M21 18v-5H3M7 13V10h5v3"/>',door:'<rect x="6" y="3" width="12" height="18" rx="1"/><circle cx="14.5" cy="12" r="1"/>',leaf:'<path d="M5 19c0-8 6-14 15-14 0 9-6 15-14 15"/><path d="M5 19 14 10"/>'};
+function iconFor(t){t=t.toLowerCase();const k=/solar|power|light/.test(t)?'sun':/stove|fire|heat/.test(t)?'fire':/water/.test(t)?'water':/cook|kitchen|propane|dish/.test(t)?'pan':/canoe|kayak|boat|paddle/.test(t)?'boat':/bed|sleep|bunk/.test(t)?'bed':/outhouse|toilet|bath/.test(t)?'door':'leaf';const s=document.createElementNS('http://www.w3.org/2000/svg','svg');s.setAttribute('viewBox','0 0 24 24');s.setAttribute('fill','none');s.setAttribute('stroke','currentColor');s.setAttribute('stroke-width','1.8');s.setAttribute('stroke-linecap','round');s.setAttribute('stroke-linejoin','round');s.innerHTML=ICONS[k];return s}
+
+/* ---------- occupancy ---------- */
+let OCC=new Map();
+function buildOcc(){OCC=new Map();(S.blocked||[]).forEach(d=>OCC.set(d,{type:'blocked'}));(S.bookings||[]).forEach(b=>{if(b.status==='Cancelled')return;for(let d=b.checkIn;d<b.checkOut;d=addDays(d,1))OCC.set(d,{type:'booked',b})})}
+const taken=d=>OCC.has(d);
+function firstTakenAfter(a){for(let i=1;i<500;i++){const d=addDays(a,i);if(OCC.has(d))return d}return null}
+
+/* ---------- page rendering ---------- */
+function renderText(){
+  document.title=S.name;$('#siteName').textContent=S.name;$('#tagline').textContent=S.tagline;$('#locLine').textContent=S.location;
+  $('#brandName').textContent=S.name.replace(/\s*Adventure Cabin$/i,'')||S.name;$('#footName').textContent='© '+new Date().getFullYear()+' '+S.name;
+  const facts=[[S.size,'Cabin'],[S.area,'Living space'],['Up to '+S.maxGuests,'Guests'],[S.power,'Power']];
+  $('#facts').replaceChildren(...facts.map(([v,l])=>h('div',{class:'fact'},h('span',{class:'l',text:l}),h('span',{class:'v',text:v}))));
+  $('#desc').replaceChildren(...String(S.description||'').split(/\n\s*\n/).filter(Boolean).map(p=>h('p',{text:p.trim()})));
+  $('#amen').replaceChildren(...S.amenities.map(a=>h('li',null,h('span',{class:'ic'},iconFor(a)),h('span',{text:a}))));
+  $('#times').replaceChildren(h('div',{class:'time'},h('small',{class:'eyebrow',text:'Check-in'}),h('b',{text:'After '+S.checkIn})),h('div',{class:'time'},h('small',{class:'eyebrow',text:'Check-out'}),h('b',{text:'By '+S.checkOut})),h('div',{class:'time'},h('small',{class:'eyebrow',text:'Minimum stay'}),h('b',{text:nightsTxt(S.minNights)})));
+  $('#ruleList').replaceChildren(...S.rules.map(r=>h('li',{text:r})));
+  const initial=(S.hostName||'H').trim().charAt(0).toUpperCase();
+  const copy=(v,label)=>h('button',{class:'btn ghost sm',onclick:async()=>{try{await navigator.clipboard.writeText(v);toast(label+' copied')}catch(e){toast('Select the text to copy it')}}},'Copy');
+  $('#host').replaceChildren(h('div',{class:'avatar',text:initial}),h('div',{class:'hostinfo'},h('b',{text:'Hosted by '+S.hostName}),h('span',{class:'muted',text:'Book directly with the owner. No booking-site fees.'}),
+    h('div',{class:'contactrow',style:'margin-top:8px'},h('span',{text:S.hostEmail}),copy(S.hostEmail,'Email')),h('div',{class:'contactrow'},h('span',{text:S.hostPhone}),copy(S.hostPhone,'Phone number'))));
+}
+function renderGallery(){
+  const g=$('#photos');const ps=S.photos;const n=ps.length;const show=n>=5?ps.slice(0,5):n>=3?ps.slice(0,3):ps;
+  g.className='gallery n'+(n>=5?5:n>=3?3:n);
+  const items=show.map((p,i)=>h('button',{class:'ph','aria-label':'Open photo: '+(p.caption||'photo '+(i+1)),onclick:()=>openLB(i)},h('img',{src:photoSrc(p),alt:p.caption||'',loading:i?'lazy':'eager'})));
+  if(!n)items.push(h('div',{class:'ph',style:'display:grid;place-items:center;color:var(--muted)'},'Photos coming soon'));
+  g.replaceChildren(...items);
+  const old=document.querySelector('.showall');if(old)old.remove();
+  if(n>1){const b=h('button',{class:'btn sm showall',onclick:()=>openLB(0)},'Show all '+n+' photos');if(matchMedia('(max-width:760px)').matches)$('.galwrap').append(b);else g.append(b)}
+}
+
+/* ---------- calendars ---------- */
+const calOffset={};
+function monthsFor(id){if(id==='calAdmin')return matchMedia('(max-width:860px)').matches?1:2;return matchMedia('(max-width:700px)').matches?1:2}
+function renderCal(el,mode){
+  const id=el.id;if(calOffset[id]==null)calOffset[id]=0;const M=monthsFor(id);const t=parse(TODAY);
+  const limit=firstTakenAfter(sel.in||TODAY);const choosingOut=mode==='guest'&&sel.in&&!sel.out;
+  const nav=h('div',{class:'calnav'},h('button',{'aria-label':'Previous month',disabled:calOffset[id]<=0,onclick:()=>{calOffset[id]--;renderCal(el,mode)}},chev('m15 18-6-6 6-6')),h('button',{'aria-label':'Next month',disabled:calOffset[id]>=22,onclick:()=>{calOffset[id]++;renderCal(el,mode)}},chev('m9 18 6-6-6-6')));
+  const months=h('div',{class:'months',style:'--m:'+M});
+  for(let k=0;k<M;k++){
+    const base=new Date(Date.UTC(t.y,t.m+calOffset[id]+k,1));const y=base.getUTCFullYear(),m=base.getUTCMonth();
+    const first=base.getUTCDay();const dim=new Date(Date.UTC(y,m+1,0)).getUTCDate();
+    const days=h('div',{class:'days',role:'grid'});
+    for(let i=0;i<first;i++)days.append(h('span'));
+    for(let d=1;d<=dim;d++){
+      const ds=iso(y,m,d);const o=OCC.get(ds);const past=ds<TODAY;const cls=['day'];let dis=past;let title=null;
+      if(past)cls.push('past');if(ds===TODAY)cls.push('today');
+      if(mode==='admin'){
+        if(o&&o.type==='blocked'){cls.push('blocked');title='Blocked by you. Click to open this date.'}
+        else if(o){cls.push('booked');dis=true;title=o.b.name+' · '+fmt(o.b.checkIn)+' to '+fmt(o.b.checkOut)}
+        else title=past?null:'Click to block this date';
+      }else{
+        const coOk=choosingOut&&o&&ds===limit;
+        if(o&&!coOk){cls.push('taken');dis=true}
+        if(coOk){cls.push('coonly');title='Check-out only'}
+        if(sel.in===ds){cls.push('start');if(sel.out)cls.push('hasend')}
+        if(sel.out===ds)cls.push('end');
+        if(sel.in&&sel.out&&ds>sel.in&&ds<sel.out)cls.push('range');
+        if(choosingOut&&ds>sel.in&&ds<addDays(sel.in,S.minNights))cls.push('short');
+      }
+      const label=fmt(ds,{weekday:'long',month:'long',day:'numeric',year:'numeric'})+(cls.includes('taken')?', unavailable':'')+(title?', '+title:'');
+      days.append(h('button',{class:cls.join(' '),'data-d':ds,disabled:dis,title,'aria-label':label,onclick:()=>mode==='admin'?toggleBlock(ds):pick(ds),onmouseenter:mode==='guest'?()=>setHover(ds):null},h('i',{text:d})));
+    }
+    months.append(h('div',{class:'month'},h('h4',{text:base.toLocaleDateString(undefined,{month:'long',year:'numeric',timeZone:'UTC'})}),h('div',{class:'wk','aria-hidden':'true'},...['S','M','T','W','T','F','S'].map(x=>h('span',{text:x}))),days));
+  }
+  el.classList.toggle('admin',mode==='admin');
+  el.replaceChildren(nav,months);
+  if(mode==='guest')el.onmouseleave=()=>setHover(null);
+}
+function chev(d){const s=document.createElementNS('http://www.w3.org/2000/svg','svg');s.setAttribute('width','16');s.setAttribute('height','16');s.setAttribute('viewBox','0 0 24 24');s.setAttribute('fill','none');s.setAttribute('stroke','currentColor');s.setAttribute('stroke-width','2.5');s.innerHTML='<path d="'+d+'"/>';return s}
+function setHover(d){hover=d;const lim=sel.in&&!sel.out?firstTakenAfter(sel.in):null;document.querySelectorAll('.cal:not(.admin) .day').forEach(b=>{const x=b.dataset.d;b.classList.toggle('hov',!!(sel.in&&!sel.out&&hover&&hover>sel.in&&x>sel.in&&x<=hover&&(!lim||hover<=lim)&&x!==hover))})}
+function pick(d){
+  const choosingOut=sel.in&&!sel.out;const lim=choosingOut?firstTakenAfter(sel.in):null;
+  if(!choosingOut||d<=sel.in||(lim&&d>lim)){if(taken(d))return;sel={in:d,out:null}}
+  else{const n=diff(sel.in,d);if(n<S.minNights){toast('The minimum stay is '+nightsTxt(S.minNights));return}sel.out=d;if(!$('#pop').hidden)setTimeout(closePop,450)}
+  hover=null;renderBooking();
+}
+function toggleBlock(d){const i=S.blocked.indexOf(d);if(i>=0){S.blocked.splice(i,1);toast(fmt(d)+' is open for booking')}else{S.blocked.push(d);toast(fmt(d)+' is blocked')}save();buildOcc();if(sel.in&&!stayFree(sel.in,sel.out||addDays(sel.in,1)))sel={in:null,out:null};renderBooking();renderAdmin()}
+function stayFree(a,b){for(let d=a;d<b;d=addDays(d,1))if(OCC.has(d))return false;return true}
+
+/* ---------- booking card ---------- */
+function renderBooking(){
+  $('#bPrice').textContent=money(S.price);$('#mPrice').textContent=money(S.price);$('#bMin').textContent=S.minNights+'-night minimum';
+  $('#gMax').textContent='Up to '+S.maxGuests;if(guests>S.maxGuests)guests=S.maxGuests;$('#gCount').textContent=guests;$('#gMinus').disabled=guests<=1;$('#gPlus').disabled=guests>=S.maxGuests;
+  const setF=(btn,v)=>{const b=btn.querySelector('b');b.textContent=v?fmt(v,{weekday:'short',month:'short',day:'numeric'}):'Add date';b.classList.toggle('ph',!v)};
+  setF($('#bIn'),sel.in);setF($('#bOut'),sel.out);
+  const popOpen=!$('#pop').hidden;$('#bIn').classList.toggle('on',popOpen&&!(sel.in&&!sel.out));$('#bOut').classList.toggle('on',popOpen&&!!(sel.in&&!sel.out));
+  const full=sel.in&&sel.out;const bd=$('#breakdown');
+  if(full){const q=quote(sel.in,sel.out);bd.hidden=false;
+    bd.replaceChildren(...priceTable(q).children);
+  }else bd.hidden=true;
+  $('#reserve').textContent=full?'Reserve':'Check availability';
+  $('#mBtn').textContent=full?'Reserve':'Check availability';
+  $('#mDates').textContent=full?fmt(sel.in)+' – '+fmt(sel.out)+' · '+nightsTxt(diff(sel.in,sel.out)):'Add your dates';
+  $('#reserveMain').disabled=!full;
+  $('#selText').textContent=full?fmt(sel.in,{weekday:'short',month:'short',day:'numeric'})+' to '+fmt(sel.out,{weekday:'short',month:'short',day:'numeric'})+' · '+nightsTxt(diff(sel.in,sel.out)):sel.in?'Check-in '+fmt(sel.in)+'. Now pick your check-out date.':'No dates selected';
+  $('#availHint').textContent='Pick your check-in date, then your check-out date. Minimum stay is '+nightsTxt(S.minNights)+'.';
+  $('#popTitle').textContent=full?nightsTxt(diff(sel.in,sel.out)):sel.in?'Select check-out date':'Select check-in date';
+  $('#popSub').textContent=full?fmt(sel.in,{month:'short',day:'numeric',year:'numeric'})+' – '+fmt(sel.out,{month:'short',day:'numeric',year:'numeric'}):'Minimum stay: '+nightsTxt(S.minNights);
+  renderCal($('#calMain'),'guest');if(popOpen)renderCal($('#calPop'),'guest');
+}
+function openPop(){$('#pop').hidden=false;renderBooking();}
+function closePop(){$('#pop').hidden=true;renderBooking()}
+$('#bIn').onclick=()=>{if($('#pop').hidden)openPop();else closePop()};
+$('#bOut').onclick=()=>{if($('#pop').hidden)openPop();else closePop()};
+$('#popClose').onclick=closePop;$('#popDone').onclick=closePop;
+$('#popClear').onclick=()=>{sel={in:null,out:null};renderBooking()};
+$('#clearMain').onclick=()=>{sel={in:null,out:null};renderBooking()};
+$('#gMinus').onclick=()=>{guests=Math.max(1,guests-1);renderBooking()};
+$('#gPlus').onclick=()=>{guests=Math.min(S.maxGuests,guests+1);renderBooking()};
+function reserveOrPick(){if(sel.in&&sel.out)openCheckout();else if(matchMedia('(max-width:960px)').matches){$('#availability').scrollIntoView({behavior:'smooth'})}else openPop()}
+$('#reserve').onclick=reserveOrPick;$('#mBtn').onclick=reserveOrPick;$('#reserveMain').onclick=()=>openCheckout();
+document.addEventListener('click',e=>{const p=$('#pop');if(!p.hidden&&!p.contains(e.target)&&!e.target.closest('.datebox')&&!e.target.closest('#reserve')&&document.body.contains(e.target))closePop()});
+
+/* ---------- modals ---------- */
+let lastFocus=null;
+function openModal(id){lastFocus=document.activeElement;const m=$(id);m.hidden=false;document.body.style.overflow='hidden';setTimeout(()=>{const f=m.querySelector('input,textarea,select,button:not(.x)');if(f)f.focus()},30)}
+function closeModal(id){$(id).hidden=true;if(!document.querySelector('.modal:not([hidden]),.lb:not([hidden])'))document.body.style.overflow='';if(lastFocus&&lastFocus.focus)lastFocus.focus()}
+document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target.closest('[data-close]'))closeModal('#'+m.id)}));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!$('#lb').hidden)return closeLB();const open=[...document.querySelectorAll('.modal:not([hidden])')].pop();if(open)return closeModal('#'+open.id);if(!$('#pop').hidden)closePop()}if(!$('#lb').hidden){if(e.key==='ArrowRight')lbGo(1);if(e.key==='ArrowLeft')lbGo(-1)}});
+const xBtn=(fn)=>{const b=h('button',{class:'x',type:'button','aria-label':'Close',onclick:fn});b.innerHTML='<svg width="14" height="14" viewBox="0 0 14 14"><path d="M2 2l10 10M12 2 2 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';return b};
+
+/* ---------- lightbox ---------- */
+let lbI=0;
+function openLB(i){if(!S.photos.length)return;lbI=i;$('#lb').hidden=false;document.body.style.overflow='hidden';lbShow()}
+function lbShow(){const p=S.photos[lbI];$('#lbImg').src=photoSrc(p);$('#lbImg').alt=p.caption||'';$('#lbCap').textContent=p.caption||'';$('#lbCount').textContent=(lbI+1)+' / '+S.photos.length;$('#lbPrev').hidden=$('#lbNext').hidden=S.photos.length<2}
+function lbGo(d){lbI=(lbI+d+S.photos.length)%S.photos.length;lbShow()}
+function closeLB(){$('#lb').hidden=true;if(!document.querySelector('.modal:not([hidden])'))document.body.style.overflow=''}
+$('#lbPrev').onclick=()=>lbGo(-1);$('#lbNext').onclick=()=>lbGo(1);$('#lbClose').onclick=closeLB;
+let tx=null;$('#lb').addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});$('#lb').addEventListener('touchend',e=>{if(tx==null)return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)lbGo(dx<0?1:-1);tx=null});
+
+/* ---------- checkout ---------- */
+let co={};
+function openCheckout(){if(!(sel.in&&sel.out))return;if(!$('#pop').hidden)$('#pop').hidden=true;co={step:1,name:'',email:'',phone:'',msg:'',card:'',exp:'',cvc:'',cname:'',zip:''};renderCO();openModal('#mCheckout')}
+function field(id,label,attrs,help){const inp=attrs.tag==='textarea'?h('textarea',Object.assign({id},attrs,{tag:null})):h('input',Object.assign({id},attrs));return h('div',{class:'field','data-f':id},h('label',{for:id,text:label}),inp,help?h('span',{class:'help',text:help}):null,h('span',{class:'err'}))}
+function setErr(id,msg){const f=document.querySelector(`[data-f="${id}"]`);if(!f)return;f.classList.toggle('bad',!!msg);f.querySelector('.err').textContent=msg||''}
+function luhn(n){let s=0,alt=false;for(let i=n.length-1;i>=0;i--){let d=+n[i];if(alt){d*=2;if(d>9)d-=9}s+=d;alt=!alt}return s%10===0}
+function renderCO(){
+  const sh=$('#coSheet');const q=quote(sel.in,sel.out);const total=q.known?money(q.total):'$XXX';
+  const head=h('div',{class:'sheethead'},h('div',null,h('span',{class:'eyebrow',text:co.step===3?'Confirmed':'Book your stay'}),h('h2',{style:'margin-top:4px',text:co.step===1?'Your trip':co.step===2?'Payment':'You’re booked!'})),xBtn(()=>closeModal('#mCheckout')));
+  const steps=co.step<3?h('div',{class:'steps'},h('b',{text:'Step '+co.step+' of 2'}),h('div',{class:'bar'},h('i',{style:'width:'+(co.step*50)+'%'}))):null;
+  const trip=h('div',{class:'trip'},S.photos[0]?h('img',{src:photoSrc(S.photos[0]),alt:''}):null,h('div',null,h('b',{text:S.name}),h('div',{class:'hint',text:fmt(sel.in,{weekday:'short',month:'short',day:'numeric'})+' – '+fmt(sel.out,{weekday:'short',month:'short',day:'numeric',year:'numeric'})}),h('div',{class:'hint',text:nightsTxt(q.n)+' · '+guests+(guests===1?' guest':' guests')+' · Total '+total})));
+  if(co.step===1){
+    const form=h('form',{class:'form',novalidate:true,onsubmit:e=>{e.preventDefault();
+      co.name=$('#coName').value.trim();co.email=$('#coEmail').value.trim();co.phone=$('#coPhone').value.trim();co.msg=$('#coMsg').value.trim();
+      let ok=true;setErr('coName',co.name?'':'Enter your full name');if(!co.name)ok=false;
+      const em=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(co.email);setErr('coEmail',em?'':'Enter an email address like name@example.com');if(!em)ok=false;
+      if(ok){co.step=2;renderCO()}}},
+      h('div',{class:'two'},field('coName','Full name',{autocomplete:'name',value:co.name}),field('coEmail','Email',{type:'email',autocomplete:'email',value:co.email})),
+      field('coPhone','Phone (optional)',{type:'tel',autocomplete:'tel',value:co.phone}),
+      field('coMsg','Message to the owner (optional)',{tag:'textarea',placeholder:'Arrival time, questions, who is coming…'}),
+      priceTable(q),
+      h('button',{class:'btn primary block',type:'submit',style:'padding-block:14px'},'Continue to payment'));
+    sh.replaceChildren(head,steps,trip,form);setTimeout(()=>{$('#coMsg').value=co.msg},0);
+  }else if(co.step===2){
+    const cardIn=h('input',{id:'coCard',inputmode:'numeric',autocomplete:'off',placeholder:'4242 4242 4242 4242',maxlength:'23',value:co.card,oninput:e=>{const v=e.target.value.replace(/\D/g,'').slice(0,19);e.target.value=v.replace(/(.{4})/g,'$1 ').trim();tag.textContent=/^4/.test(v)?'VISA':/^5[1-5]|^2[2-7]/.test(v)?'MC':/^3[47]/.test(v)?'AMEX':''}});
+    const tag=h('span',{class:'brandtag'});
+    const form=h('form',{class:'form',novalidate:true,onsubmit:e=>{e.preventDefault();
+      const num_=$('#coCard').value.replace(/\D/g,''),exp=$('#coExp').value.trim(),cvc=$('#coCvc').value.trim(),cname=$('#coCName').value.trim();
+      let ok=true;const cOk=num_.length>=13&&luhn(num_);setErr('coCard',cOk?'':'Check the card number');ok=ok&&cOk;
+      const m=exp.match(/^(\d{2})\s*\/\s*(\d{2})$/);let eOk=false;if(m){const mm=+m[1],yy=2000+(+m[2]);eOk=mm>=1&&mm<=12&&(yy>now.getFullYear()||(yy===now.getFullYear()&&mm>=now.getMonth()+1))}setErr('coExp',eOk?'':'Use MM / YY');ok=ok&&eOk;
+      const vOk=/^\d{3,4}$/.test(cvc);setErr('coCvc',vOk?'':'3 or 4 digits');ok=ok&&vOk;
+      setErr('coCName',cname?'':'Enter the name on the card');ok=ok&&!!cname;
+      if(!ok)return;
+      buildOcc();if(!stayFree(sel.in,sel.out)){toast('Those dates were just booked. Please pick new dates.');closeModal('#mCheckout');sel={in:null,out:null};renderBooking();return}
+      const btn=e.target.querySelector('[type=submit]');btn.disabled=true;btn.replaceChildren(h('span',{class:'spin'}),'Processing payment…');
+      setTimeout(()=>{const code='HLC-'+Math.random().toString(36).slice(2,8).toUpperCase();
+        S.bookings.push({id:'b'+Date.now(),code,name:co.name,email:co.email,phone:co.phone,note:co.msg,checkIn:sel.in,checkOut:sel.out,guests,total:q.known?q.total:null,status:'Paid',created:TODAY});
+        save();buildOcc();co.code=code;co.step=3;renderCO();renderAdmin()},1400)}},
+      h('div',{class:'demo'},h('div',null,h('b',{text:'Sample checkout. No card is charged.'}),'Use the test card below. On the live site, payments go through Stripe’s secure checkout, so card numbers never touch this website.'),h('button',{type:'button',class:'btn sm soft',style:'flex:none',onclick:()=>{$('#coCard').value='4242 4242 4242 4242';tag.textContent='VISA';$('#coExp').value='12 / 30';$('#coCvc').value='123';$('#coCName').value=co.name;}},'Use test card')),
+      h('div',{class:'field','data-f':'coCard'},h('label',{for:'coCard',text:'Card number'}),h('div',{class:'cardin'},cardIn,tag),h('span',{class:'err'})),
+      h('div',{class:'three'},field('coCName','Name on card',{autocomplete:'off',value:co.name}),field('coExp','Expiry',{placeholder:'MM / YY',inputmode:'numeric',maxlength:'7',autocomplete:'off',oninput:e=>{let v=e.target.value.replace(/\D/g,'').slice(0,4);e.target.value=v.length>2?v.slice(0,2)+' / '+v.slice(2):v}}),field('coCvc','CVC',{inputmode:'numeric',maxlength:'4',autocomplete:'off'})),
+      priceTable(q),
+      h('div',{style:'display:flex;gap:10px'},h('button',{type:'button',class:'btn ghost',onclick:()=>{co.step=1;renderCO()}},'Back'),h('button',{class:'btn primary',type:'submit',style:'flex:1;padding-block:14px'},'Pay '+total)));
+    sh.replaceChildren(head,steps,trip,form);
+  }else{
+    const tick=h('div',{class:'tick'});tick.innerHTML='<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5 9-10"/></svg>';
+    sh.replaceChildren(head,h('div',{class:'done'},tick,h('h3',{text:'See you at the lake, '+co.name.split(' ')[0]+'.'}),h('p',{class:'muted',text:'Your confirmation number'}),h('div',{class:'code',text:co.code})),trip,
+      h('div',{class:'demo'},h('div',null,h('b',{text:'What happens next'}),'On the live site, a receipt and arrival directions are emailed to '+co.email+', and the owner is notified right away.')),
+      h('button',{class:'btn primary block',onclick:()=>{closeModal('#mCheckout');sel={in:null,out:null};renderBooking()}},'Done'));
+  }
+}
+function priceTable(q){const rows=[h('div',{class:'row'},h('span',{text:money(S.price)+' × '+nightsTxt(q.n)}),h('span',{text:q.known?money(q.sub):'$XXX'}))];
+  if(num(S.cleaningFee))rows.push(h('div',{class:'row'},h('span',{text:'Cleaning fee'}),h('span',{text:money(S.cleaningFee)})));
+  if(num(S.taxRate))rows.push(h('div',{class:'row'},h('span',{text:'Taxes ('+S.taxRate+'%)'}),h('span',{text:q.known?money(q.tax):'$XXX'})));
+  rows.push(h('div',{class:'row total'},h('span',{text:'Total'}),h('span',{text:q.known?money(q.total):'$XXX'})));return h('div',{class:'breakdown'},...rows)}
+
+/* ---------- owner login + dashboard ---------- */
+function ownerClick(){if(isAdmin){admTab='overview';renderAdmin();openModal('#mAdmin')}else{$('#loginPw').value='';$('#loginErr').textContent='';openModal('#mLogin')}}
+$('#ownerBtn').onclick=ownerClick;$('#ownerFoot').onclick=ownerClick;$('#adminBadge').onclick=ownerClick;
+$('#loginForm').onsubmit=e=>{e.preventDefault();if($('#loginPw').value.trim().toLowerCase()==='cabin'){isAdmin=true;try{sessionStorage.setItem(KEY+'-admin','1')}catch(e){}closeModal('#mLogin');syncAdminUI();admTab='overview';renderAdmin();openModal('#mAdmin');toast('Signed in as owner')}else $('#loginErr').textContent='That password is not right. Try again.'};
+function syncAdminUI(){$('#adminBadge').hidden=!isAdmin;$('#ownerBtn').textContent=isAdmin?'Owner dashboard':'Owner login';$('#ownerFoot').textContent=isAdmin?'Owner dashboard':'Owner login'}
+let admTab='overview';let confirmKey=null;
+function live(){save();buildOcc();renderText();renderGallery();renderBooking()}
+function aField(label,key,opts={}){const id='a_'+key;const v=Array.isArray(S[key])?S[key].join('\n'):(S[key]==null?'':S[key]);
+  const inp=opts.area?h('textarea',{id,rows:opts.rows||4}):h('input',{id,type:opts.type||'text',inputmode:opts.inputmode,min:opts.min,step:opts.step,placeholder:opts.placeholder});inp.value=v;
+  inp.addEventListener('input',()=>{let x=inp.value;if(opts.list)x=x.split('\n').map(s=>s.trim()).filter(Boolean);else if(opts.number){x=x===''?null:Number(x);if(opts.int&&x!=null)x=Math.max(1,Math.round(x))}S[key]=x;live();flashSaved()});
+  return h('div',{class:'field'},h('label',{for:id,text:label}),inp,opts.help?h('span',{class:'help',text:opts.help}):null)}
+let savedT;function flashSaved(){const s=document.getElementById('admSaved');if(!s)return;s.textContent='Saving…';clearTimeout(savedT);savedT=setTimeout(()=>{s.textContent='All changes saved'},500)}
+function renderAdmin(){
+  const sh=$('#admSheet');if($('#mAdmin').hidden&&!isAdmin)return;
+  const tabs=[['overview','Overview'],['bookings','Bookings'],['calendar','Calendar'],['pricing','Pricing'],['listing','Description'],['photos','Photos'],['contact','Contact & rules']];
+  const tabEl=h('div',{class:'tabs',role:'tablist'},...tabs.map(([k,l])=>h('button',{role:'tab','aria-selected':String(admTab===k),onclick:()=>{admTab=k;confirmKey=null;renderAdmin()}},l)),h('div',{class:'sep'}),h('button',{onclick:()=>{isAdmin=false;try{sessionStorage.removeItem(KEY+'-admin')}catch(e){}syncAdminUI();closeModal('#mAdmin');toast('Signed out')}},'Sign out'));
+  const pane=h('div',{class:'pane'});
+  const active=S.bookings.filter(b=>b.status!=='Cancelled');const upcoming=active.filter(b=>b.checkOut>=TODAY).sort((a,b)=>a.checkIn<b.checkIn?-1:1);
+  if(admTab==='overview'){
+    const nights=upcoming.reduce((s,b)=>s+diff(b.checkIn,b.checkOut),0);const rev=upcoming.reduce((s,b)=>s+(num(b.total)||0),0);
+    pane.append(h('h3',{text:'Welcome back'}),h('p',{class:'muted',text:'Everything on the public page can be changed from here. Changes show up on the site as you type.'}),
+      h('div',{class:'stats'},h('div',{class:'stat'},h('b',{text:upcoming.length}),h('span',{text:'Upcoming bookings'})),h('div',{class:'stat'},h('b',{text:nights}),h('span',{text:'Nights booked'})),h('div',{class:'stat'},h('b',{text:rev?money(rev):'$0'}),h('span',{text:'Paid, upcoming'}))),
+      h('h3',{style:'font-size:1.05rem;margin-top:6px',text:'Next arrivals'}),bookingList(upcoming.slice(0,3)),
+      h('div',{class:'demo'},h('div',null,h('b',{text:'Sample version'}),'In this preview, changes are saved in this browser only. The live site will save them to a secure server so every visitor sees them.')));
+  }else if(admTab==='bookings'){
+    const all=S.bookings.slice().sort((a,b)=>a.checkIn<b.checkIn?1:-1);
+    pane.append(h('h3',{text:'Bookings'}),h('p',{class:'muted',text:'Every reservation, newest dates first. Cancelling frees the dates on the calendar.'}),bookingList(all,true));
+  }else if(admTab==='calendar'){
+    const cal=h('div',{class:'cal',id:'calAdmin'});
+    pane.append(h('h3',{text:'Calendar'}),h('p',{class:'muted',text:'Click a date to block it (for your own use, maintenance, or anything else). Click it again to open it up.'}),
+      h('div',{class:'legend'},h('span',null,h('i',{class:'lg-bl'}),'Blocked by you'),h('span',null,h('i',{class:'lg-bo'}),'Booked by a guest'),h('span',null,h('i',{class:'lg-av'}),'Open')),cal);
+    renderCal(cal,'admin');
+  }else if(admTab==='pricing'){
+    pane.append(h('h3',{text:'Pricing'}),
+      h('div',{class:'form'},h('div',{class:'two'},aField('Nightly price ($)','price',{type:'number',number:true,min:0,step:'1',inputmode:'decimal',placeholder:'Not set yet, shows as $XXX'}),aField('Cleaning fee ($)','cleaningFee',{type:'number',number:true,min:0,step:'1',inputmode:'decimal',placeholder:'Optional'})),
+      h('div',{class:'two'},aField('Tax rate (%)','taxRate',{type:'number',number:true,min:0,step:'0.01',inputmode:'decimal',help:'Leave at 0 if taxes are included or not charged.'}),aField('Minimum nights','minNights',{type:'number',number:true,int:true,min:1,step:'1'})),
+      aField('Maximum guests','maxGuests',{type:'number',number:true,int:true,min:1,step:'1'})));
+  }else if(admTab==='listing'){
+    pane.append(h('h3',{text:'Description'}),h('div',{class:'form'},aField('Cabin name','name'),aField('Location line','location',{help:'Shown above the name, e.g. the lake and region.'}),aField('Short tagline','tagline',{area:true,rows:2}),
+      aField('About the cabin','description',{area:true,rows:9,help:'Leave a blank line between paragraphs.'}),
+      h('div',{class:'three'},aField('Cabin size','size'),aField('Living space','area'),aField('Power','power')),
+      aField('What’s at the cabin (one per line)','amenities',{area:true,rows:8,list:true})));
+  }else if(admTab==='photos'){
+    const fileIn=h('input',{type:'file',accept:'image/*',multiple:true,id:'phFile',style:'display:none',onchange:e=>addFiles(e.target.files)});
+    const drop=h('label',{class:'drop',for:'phFile'},h('b',{text:'Add photos'}),h('span',{class:'hint',text:'Click to choose photos, or drag them here. Large photos are resized automatically.'}),fileIn);
+    drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('over')});drop.addEventListener('dragleave',()=>drop.classList.remove('over'));drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('over');addFiles(e.dataTransfer.files)});
+    const grid=h('div',{class:'phgrid'},...S.photos.map((p,i)=>{const cap=h('input',{value:p.caption||'',placeholder:'Caption','aria-label':'Caption for photo '+(i+1)});cap.addEventListener('input',()=>{p.caption=cap.value;live();flashSaved()});
+      const ck='ph'+p.id;
+      return h('div',{class:'phitem'},h('div',{style:'position:relative'},h('img',{src:photoSrc(p),alt:p.caption||''}),i===0?h('span',{class:'cover',text:'COVER'}):null),h('div',{class:'meta'},cap,
+        confirmKey===ck?h('div',{class:'confirmrow'},h('span',{class:'hint',text:'Delete this photo?'}),h('button',{class:'btn danger sm',onclick:()=>{S.photos.splice(i,1);confirmKey=null;live();renderAdmin();toast('Photo deleted')}},'Delete'),h('button',{class:'btn ghost sm',onclick:()=>{confirmKey=null;renderAdmin()}},'Keep'))
+        :h('div',{class:'phbtns'},h('button',{disabled:i===0,'aria-label':'Move earlier',onclick:()=>movePh(i,-1)},'←'),h('button',{disabled:i===S.photos.length-1,'aria-label':'Move later',onclick:()=>movePh(i,1)},'→'),i?h('button',{onclick:()=>{const [x]=S.photos.splice(i,1);S.photos.unshift(x);live();renderAdmin()}},'Make cover'):null,h('button',{class:'del',onclick:()=>{confirmKey=ck;renderAdmin()}},'Delete'))))}));
+    pane.append(h('h3',{text:'Photos'}),h('p',{class:'muted',text:'The first photo is the cover. Use the arrows to change the order. The sample pictures are placeholders to swap for real photos of the cabin.'}),drop,grid);
+  }else if(admTab==='contact'){
+    pane.append(h('h3',{text:'Contact & rules'}),h('div',{class:'form'},aField('Host name','hostName'),h('div',{class:'two'},aField('Email','hostEmail',{type:'email'}),aField('Phone','hostPhone',{type:'tel'})),
+      h('div',{class:'two'},aField('Check-in time','checkIn'),aField('Check-out time','checkOut')),aField('House rules (one per line)','rules',{area:true,rows:6,list:true})),
+      h('div',{style:'border-top:1px solid var(--line);padding-top:18px;display:grid;gap:10px'},h('b',{text:'Start over'}),h('p',{class:'hint',text:'Put the sample content, photos and bookings back the way they were.'}),
+        confirmKey==='reset'?h('div',{class:'confirmrow'},h('span',{class:'hint',text:'This removes all your changes.'}),h('button',{class:'btn danger sm',onclick:()=>{S=defaults();confirmKey=null;sel={in:null,out:null};live();renderAdmin();toast('Sample content restored')}},'Reset everything'),h('button',{class:'btn ghost sm',onclick:()=>{confirmKey=null;renderAdmin()}},'Cancel'))
+        :h('div',null,h('button',{class:'btn danger sm',onclick:()=>{confirmKey='reset';renderAdmin()}},'Reset sample content'))));
+  }
+  const head=h('div',{class:'sheethead'},h('div',null,h('span',{class:'eyebrow',text:'Owner dashboard'}),h('h2',{style:'margin-top:4px',text:S.name}),h('span',{class:'hint',id:'admSaved',text:'All changes saved'})),xBtn(()=>closeModal('#mAdmin')));
+  const focusedId=document.activeElement&&sh.contains(document.activeElement)?document.activeElement.id:null;
+  sh.replaceChildren(head,h('div',{class:'adm'},tabEl,pane));
+  if(focusedId&&document.getElementById(focusedId))document.getElementById(focusedId).focus();
+}
+function bookingList(list,actions){if(!list.length)return h('p',{class:'hint',text:'No bookings yet.'});
+  return h('div',{class:'blist'},...list.map(b=>{const n=diff(b.checkIn,b.checkOut);const ck='bk'+b.id;
+    const pill=h('span',{class:'pill'+(b.status==='Cancelled'?' c':b.status==='Sample'?' s':''),text:b.status});
+    const right=actions&&b.status!=='Cancelled'?(confirmKey===ck?h('div',{class:'confirmrow'},h('button',{class:'btn danger sm',onclick:()=>{b.status='Cancelled';confirmKey=null;live();renderAdmin();toast('Booking cancelled. Dates are open again.')}},'Cancel booking'),h('button',{class:'btn ghost sm',onclick:()=>{confirmKey=null;renderAdmin()}},'Keep')):h('button',{class:'btn ghost sm',onclick:()=>{confirmKey=ck;renderAdmin()}},'Cancel…')):pill;
+    return h('div',{class:'bitem'},h('div',{style:'display:grid;gap:2px;min-width:0'},h('div',null,h('span',{class:'who',text:fmt(b.checkIn,{weekday:'short',month:'short',day:'numeric'})+' – '+fmt(b.checkOut,{weekday:'short',month:'short',day:'numeric'})}),' ',actions?pill:null),
+      h('span',{class:'sub',text:b.name+' · '+nightsTxt(n)+' · '+b.guests+(b.guests===1?' guest':' guests')+' · '+(b.total!=null?money(b.total):'$XXX')}),h('span',{class:'sub',text:[b.email,b.phone,b.code].filter(Boolean).join(' · ')}),b.note?h('span',{class:'sub',text:'“'+b.note+'”'}):null),right)}))}
+function movePh(i,d){const j=i+d;if(j<0||j>=S.photos.length)return;[S.photos[i],S.photos[j]]=[S.photos[j],S.photos[i]];live();renderAdmin()}
+function addFiles(files){const list=[...files].filter(f=>f.type.startsWith('image/'));if(!list.length)return toast('Choose image files (JPG, PNG or HEIC exported as JPG)');let done=0;
+  list.forEach(file=>{const rd=new FileReader();rd.onload=()=>{const img=new Image();img.onload=()=>{const max=1600,sc=Math.min(1,max/Math.max(img.width,img.height));const c=document.createElement('canvas');c.width=Math.round(img.width*sc);c.height=Math.round(img.height*sc);c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+    S.photos.push({id:'u'+Date.now()+Math.random().toString(36).slice(2,6),src:c.toDataURL('image/jpeg',.82),caption:file.name.replace(/\.[^.]+$/,'').replace(/[-_]+/g,' ')});done++;if(done===list.length){live();renderAdmin();toast(list.length===1?'Photo added':list.length+' photos added')}};img.onerror=()=>toast('That photo could not be read. Try a JPG or PNG.');img.src=rd.result};rd.readAsDataURL(file)})}
+
+/* ---------- boot ---------- */
+buildOcc();renderText();renderGallery();renderBooking();syncAdminUI();
+let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{renderGallery();renderBooking();if(!$('#mAdmin').hidden&&admTab==='calendar')renderAdmin()},150)});
+})();
+</script>
+
+</body>
+</html>
